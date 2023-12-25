@@ -6,8 +6,7 @@ import { Button } from 'react-bootstrap';
 function App() {
   return (
     <>
-      <Header />
-      <Home />
+  <Home />
     </>
   );
 }
