@@ -1,17 +1,30 @@
-import React from 'react'
+import React,{useContext} from 'react'
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
+import CartContext from '../store/cart-context';
 
- const Products = ({imageUrl,label}) => {
+ const Products = ({item}) => {
+const {id,title,price,imageUrl,quantity} = item;
+
+  const cartCtx = useContext(CartContext)
+  const addAmountNumberandler = ()=>{
+       cartCtx.addItem({
+          id,
+          title,
+          price,
+          imageUrl,
+          quantity
+       })
+  }
   return (
     <>
-    <h3>{label}</h3>
+    <h3>{title}</h3>
     <Card style={{ width: '18rem' }}>
     <Card.Img variant="top" src={imageUrl} />
     
    <Card.Body>
-    <p>$234</p>
-   <Button variant="info">ADD TO CART</Button>
+    <p>${price}</p>
+   <Button variant="info" onClick={addAmountNumberandler} >ADD TO CART</Button>
     </Card.Body>
   </Card>
   </>
@@ -19,4 +32,5 @@ import Button from 'react-bootstrap/Button';
 }
 
 export default Products;
+
 

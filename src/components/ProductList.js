@@ -8,31 +8,31 @@ import Col from 'react-bootstrap/Col';
 const cartElements = [
 
     {
-
+        id: 'm1',
         title: 'Colors',
 
         price: 100,
 
         imageUrl: 'https://prasadyash2411.github.io/ecom-website/img/Album%201.png',
 
-        quantity: 2,
+        quantity: 1,
 
     },
 
     {
-
+        id: 'm2',
         title: 'Black and white Colors',
 
         price: 50,
 
         imageUrl: 'https://prasadyash2411.github.io/ecom-website/img/Album%202.png',
 
-        quantity: 3,
+        quantity: 1,
 
     },
 
     {
-
+        id: 'm3',
         title: 'Yellow and Black Colors',
 
         price: 70,
@@ -50,7 +50,7 @@ const ProductList = () => {
         <Container>
             <h3 style={{ marginLeft: '50%' }}>Music</h3>
             <Row>
-        {cartElements.map((item)=> <Products imageUrl={item.imageUrl} label={item.title} />)}
+        {cartElements.map((item)=> <Products key={item.id} item={item} />)}
            
                 
             </Row>
