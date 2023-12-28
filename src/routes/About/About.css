@@ -1,0 +1,23 @@
+section h2 {
+    font-family: "Metal Mania";
+    text-align: center;
+    padding: 20px;
+    font-size: 30px;
+}
+
+#about {
+    max-width: 900px;
+    margin: 0 auto;
+    font-size: 22px;
+}
+
+img {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+}
+
+.about-container{
+    display: flex;
+   
+}

@@ -7,6 +7,10 @@ import CartContext from '../store/cart-context';
 
 const Cart = ({ setIsShowCart }) => {
     const cartCtx = useContext(CartContext)
+
+    const onRemoveCart=(id)=>{
+        cartCtx.removeItem(id);
+    }
     return (
         <section id="cart" class="container" style={{
             display: 'block', width: '20vw',
@@ -24,11 +28,13 @@ const Cart = ({ setIsShowCart }) => {
                     <Col>ITEM</Col>
                     <Col>PRICE</Col>
                     <Col>QUANTITY</Col>
+                    <Col>ACTION</Col>
                 </Row>
                 {cartCtx?.items.map((item) => <Row>
                     <Col>{item.title}</Col>
                     <Col>{item.price}</Col>
                     <Col>{item.quantity}</Col>
+                   <Col><button onClick={()=>{onRemoveCart(item.id)}}>remove</button></Col>
                 </Row>)}
 
             </Container>
