@@ -6,6 +6,7 @@ import Home from './routes/Home/Home';
 import Footer from './components/Footer';
 import Header from './components/Header';
 import CartProvider from './store/CartProvider';
+import FetchAPI from './routes/FetchAPI';
 
 function App() {
   const [isShowCart, setIsShowCart] = useState(false)
@@ -25,6 +26,10 @@ function App() {
         <Route
           path="/about"
           element={ <About />}
+        />
+         <Route
+          path="/api"
+          element={ <FetchAPI />}
         />
   </Routes>
   <Footer/>
