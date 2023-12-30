@@ -1,9 +1,10 @@
 import React,{useState} from 'react';
 import { Routes, Route } from 'react-router-dom';
-import Home from './routes/Home/Home';
+import Store from './routes/Store/Store';
 import About from './routes/About/About';
-import Header from './components/Header';
+import Home from './routes/Home/Home';
 import Footer from './components/Footer';
+import Header from './components/Header';
 import CartProvider from './store/CartProvider';
 
 function App() {
@@ -11,10 +12,15 @@ function App() {
   return (
     <CartProvider>
       <Header setIsShowCart={setIsShowCart}/>
+
       <Routes>
-       <Route
+      <Route
           path="/"
-          element={ <Home isShowCart={isShowCart} setIsShowCart={setIsShowCart}/>}
+          element={ <Home />}
+        />
+       <Route
+          path="/store"
+          element={ <Store isShowCart={isShowCart} setIsShowCart={setIsShowCart}/>}
         />
         <Route
           path="/about"
