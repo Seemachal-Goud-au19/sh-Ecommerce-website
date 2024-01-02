@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react'
-import Button from 'react-bootstrap/Button';
+
 
 const FetchAPI = () => {
   const [movieList, setMovieList] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
-  const [intervalId, setIntervalId] = useState(null);
+
 
   const fetchData = async () => {
     setLoading(true)
     try {
-      const response = await fetch('https://swapi.dev/api/film');
+      const response = await fetch('https://swapi.dev/api/films');
       console.log(response)
       if (!response.ok) {
-        throw new Error('Something went wrong Retrying...')
+        throw new Error('Something went wrong')
       }
       const data = await response.json();
       setMovieList(data.results);
@@ -41,24 +41,15 @@ const FetchAPI = () => {
 
   }
 
-  const handleFetchClick = () => {
-    console.log("cleared")
-    clearInterval(intervalId);
-    setError(null)
-  };
+
 
   useEffect(() => {
-    if (error) {
-      const id = setInterval(fetchData, 5000);
-      setIntervalId(id);
-    }
+    fetchData()
 
-  }, [error]);
+  }, []);
   return (
     <div>
       <h5>Movie List</h5>
-      <Button variant="info" onClick={fetchData}>Fetch Movies</Button>
-      {error && <Button variant="info" onClick={handleFetchClick}>Stop Fetching</Button>}
       {content}
     </div>
   )
