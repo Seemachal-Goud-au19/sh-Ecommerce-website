@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-
+import AddMovies from '../components/AddMovies'
 
 const FetchAPI = () => {
   const [movieList, setMovieList] = useState([])
@@ -49,6 +49,7 @@ const FetchAPI = () => {
   }, []);
   return (
     <div>
+     <AddMovies/>
       <h5>Movie List</h5>
       {content}
     </div>
