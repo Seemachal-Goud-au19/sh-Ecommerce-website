@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import './AddMovies.css'; 
 
-const AddMovies = () => {
+const AddMovies = ({addMovieshandler}) => {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -16,7 +16,7 @@ const AddMovies = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+    addMovieshandler(formData)
     console.log('Form data submitted:', formData);
   };
 
