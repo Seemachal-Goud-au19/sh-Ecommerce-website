@@ -1,4 +1,5 @@
 import React,{useContext} from 'react'
+import { Link } from 'react-router-dom';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import CartContext from '../store/cart-context';
@@ -19,6 +20,7 @@ const {id,title,price,imageUrl,quantity} = item;
   return (
     <>
     <h3>{title}</h3>
+    <Link to='/product-details/:1'>
     <Card style={{ width: '18rem' }}>
     <Card.Img variant="top" src={imageUrl} />
     
@@ -27,6 +29,7 @@ const {id,title,price,imageUrl,quantity} = item;
    <Button variant="info" onClick={addAmountNumberandler} >ADD TO CART</Button>
     </Card.Body>
   </Card>
+  </Link>
   </>
   )
 }
