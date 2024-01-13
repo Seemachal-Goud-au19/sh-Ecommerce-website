@@ -15,6 +15,7 @@ const NavBar = ({ setIsShowCart }) => {
                 <NavLink to="/" style={{ color: 'white' }}>HOME</NavLink>
                 <NavLink  to="/store" style={{ color: 'white' }}>STORE</NavLink >
                 <NavLink  to="/about" style={{ color: 'white' }}>ABOUT</NavLink >
+                <NavLink  to="/contact" style={{ color: 'white' }}>CONTACT</NavLink >
                 {!pathname.includes('about') &&
                     <div>
                         <Button variant="outline-info" onClick={() => setIsShowCart(true)}>Cart</Button>
