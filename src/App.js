@@ -9,6 +9,7 @@ import CartProvider from './store/CartProvider';
 import FetchAPI from './routes/FetchAPI';
 import Contact from './routes/Contact/Contact';
 import ProductDetail from './routes/Product/ProductDetail';
+import Login from './routes/Login/Login';
 
 function App() {
   const [isShowCart, setIsShowCart] = useState(false)
@@ -26,7 +27,7 @@ function App() {
           element={ <Store isShowCart={isShowCart} setIsShowCart={setIsShowCart}/>}
         />
           <Route
-          path="/product-details/:productID"
+          path="/store/:productID"
           element={ <ProductDetail />}
         />
         <Route
@@ -37,7 +38,10 @@ function App() {
           path="/contact"
           element={ <Contact />}
         />
-        
+          <Route
+          path="/login"
+          element={ <Login />}
+        />
          <Route
           path="/api"
           element={ <FetchAPI />}
