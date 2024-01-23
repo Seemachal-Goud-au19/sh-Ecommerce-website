@@ -10,6 +10,7 @@ import FetchAPI from './routes/FetchAPI';
 import Contact from './routes/Contact/Contact';
 import ProductDetail from './routes/Product/ProductDetail';
 import Login from './routes/Login/Login';
+import AuthForm from './routes/Auth/AuthForm';
 
 function App() {
   const [isShowCart, setIsShowCart] = useState(false)
@@ -41,6 +42,10 @@ function App() {
           <Route
           path="/login"
           element={ <Login />}
+        />
+         <Route
+          path="/auth"
+          element={ <AuthForm />}
         />
          <Route
           path="/api"
