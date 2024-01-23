@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React, { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Store from './routes/Store/Store';
 import About from './routes/About/About';
@@ -9,7 +9,6 @@ import CartProvider from './store/CartProvider';
 import FetchAPI from './routes/FetchAPI';
 import Contact from './routes/Contact/Contact';
 import ProductDetail from './routes/Product/ProductDetail';
-import Login from './routes/Login/Login';
 import AuthForm from './routes/Auth/AuthForm';
 import ProfilePage from './routes/profilePage/ProfilePage';
 
@@ -17,47 +16,44 @@ function App() {
   const [isShowCart, setIsShowCart] = useState(false)
   return (
     <CartProvider>
-      <Header setIsShowCart={setIsShowCart}/>
+      <Header setIsShowCart={setIsShowCart} />
 
       <Routes>
-      <Route
+        <Route
           path="/"
-          element={ <Home />}
+          element={<Home />}
         />
-       <Route
+        <Route
           path="/store"
-          element={ <Store isShowCart={isShowCart} setIsShowCart={setIsShowCart}/>}
+          element={<Store isShowCart={isShowCart} setIsShowCart={setIsShowCart} />}
         />
-          <Route
+        <Route
           path="/store/:productID"
-          element={ <ProductDetail />}
+          element={<ProductDetail />}
         />
         <Route
           path="/about"
-          element={ <About />}
+          element={<About />}
         />
-         <Route
+        <Route
           path="/contact"
-          element={ <Contact />}
+          element={<Contact />}
         />
-          <Route
+
+        <Route
           path="/login"
-          element={ <Login />}
+          element={<AuthForm />}
         />
-         <Route
-          path="/auth"
-          element={ <AuthForm />}
-        />
-         <Route
+        <Route
           path="/profile"
-          element={ <ProfilePage />}
+          element={<ProfilePage />}
         />
-         <Route
+        <Route
           path="/api"
-          element={ <FetchAPI />}
+          element={<FetchAPI />}
         />
-  </Routes>
-  <Footer/>
+      </Routes>
+      <Footer />
     </CartProvider>
   );
 }

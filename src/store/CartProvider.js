@@ -1,4 +1,5 @@
-import React,{useReducer, useState} from 'react'
+import React,{useReducer, useState} from 'react';
+import { useNavigate } from 'react-router-dom';
 import CartContext from './cart-context'
 
 const defaultState={
@@ -62,6 +63,7 @@ const cartReducer = (state,action)=>{
 export const CartProvider = (props) => {
 const [cartState, dispatch] = useReducer(cartReducer,defaultState);
 const [token,setToken] = useState(null);
+const navigate = useNavigate();
 
 const addItemToCartHandler=(item)=>{
   dispatch({type:'ADD',item})
@@ -79,7 +81,8 @@ setToken(token)
 }
 
 const logoutHandler =()=>{
-  setToken(null)
+  setToken(null);
+  navigate('/login')
   }
 
 const cartContextValues = {
