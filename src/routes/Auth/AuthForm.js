@@ -1,10 +1,15 @@
-import { useState, useRef } from 'react';
-
+import { useState, useRef, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import CartContext from '../../store/cart-context';
 import './AuthForm.css';
+
 
 const AuthForm = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const cartCtx = useContext(CartContext)
 
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
@@ -35,6 +40,9 @@ const AuthForm = () => {
         if (res.ok) {
         return res.json().then((data)=>{
           console.log("login data",data)
+          cartCtx.login(data.idToken)
+          navigate('/')
+
         })
         }
         else {
