@@ -16,6 +16,7 @@ const NavBar = ({ setIsShowCart }) => {
                 <NavLink  to="/store" style={{ color: 'white' }}>STORE</NavLink >
                 <NavLink  to="/about" style={{ color: 'white' }}>ABOUT</NavLink >
                 <NavLink  to="/contact" style={{ color: 'white' }}>CONTACT</NavLink >
+                {cartCtx.isLoggedIn && <NavLink to='/profile'>Profile</NavLink>}
                {!cartCtx.isLoggedIn ? <NavLink  to="/auth" style={{ color: 'white' }}>Login</NavLink > : <button onClick={cartCtx.logout}>Logout</button>}
                 {!pathname.includes('about') &&
                     <div>

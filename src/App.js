@@ -11,6 +11,7 @@ import Contact from './routes/Contact/Contact';
 import ProductDetail from './routes/Product/ProductDetail';
 import Login from './routes/Login/Login';
 import AuthForm from './routes/Auth/AuthForm';
+import ProfilePage from './routes/profilePage/ProfilePage';
 
 function App() {
   const [isShowCart, setIsShowCart] = useState(false)
@@ -46,6 +47,10 @@ function App() {
          <Route
           path="/auth"
           element={ <AuthForm />}
+        />
+         <Route
+          path="/profile"
+          element={ <ProfilePage />}
         />
          <Route
           path="/api"
