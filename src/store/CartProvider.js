@@ -88,6 +88,10 @@ export const CartProvider = (props) => {
     navigate('/login')
   }
 
+  setTimeout(()=>{
+    localStorage.removeItem('token')
+  },5000*12*5) // token active for 5 min
+
   const cartContextValues = {
     items: cartState.items,
     totalAmount: cartState.totalAmount,
