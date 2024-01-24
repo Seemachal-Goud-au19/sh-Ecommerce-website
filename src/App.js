@@ -32,7 +32,7 @@ function App() {
         />
         <Route
           path="/store/:productID"
-          element={<ProductDetail />}
+          element={cartCtx.isLoggedIn ? <ProductDetail /> : <Navigate to='/login' />}
         />
         <Route
           path="/about"
