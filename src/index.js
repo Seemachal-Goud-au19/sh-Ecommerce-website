@@ -4,7 +4,14 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import { BrowserRouter as Router } from 'react-router-dom';
+import CartProvider from './store/CartProvider';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<Router><App /></Router>);
+root.render(
+
+    <Router>
+        <CartProvider>
+            <App />
+        </CartProvider>
+    </Router>);

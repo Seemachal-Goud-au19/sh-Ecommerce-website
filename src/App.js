@@ -1,21 +1,24 @@
-import React, { useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import React, { useContext, useState } from 'react';
+import { Routes, Route, Navigate,Redirect } from 'react-router-dom';
 import Store from './routes/Store/Store';
 import About from './routes/About/About';
 import Home from './routes/Home/Home';
 import Footer from './components/Footer';
 import Header from './components/Header';
-import CartProvider from './store/CartProvider';
+
 import FetchAPI from './routes/FetchAPI';
 import Contact from './routes/Contact/Contact';
 import ProductDetail from './routes/Product/ProductDetail';
 import AuthForm from './routes/Auth/AuthForm';
 import ProfilePage from './routes/profilePage/ProfilePage';
+import CartContext from './store/cart-context';
 
 function App() {
   const [isShowCart, setIsShowCart] = useState(false)
+  const cartCtx = useContext(CartContext)
+
   return (
-    <CartProvider>
+    <>
       <Header setIsShowCart={setIsShowCart} />
 
       <Routes>
@@ -40,21 +43,26 @@ function App() {
           element={<Contact />}
         />
 
-        <Route
+        {!cartCtx.isLoggedIn && <Route
           path="/login"
           element={<AuthForm />}
-        />
+        />}
+
         <Route
           path="/profile"
-          element={<ProfilePage />}
+          element={cartCtx.isLoggedIn ? <ProfilePage /> : <Navigate to='/login' />}
         />
         <Route
           path="/api"
           element={<FetchAPI />}
         />
+         <Route
+          path="*"
+          element={<Navigate to='/' />}
+        />
       </Routes>
       <Footer />
-    </CartProvider>
+    </>
   );
 }
 
