@@ -41,7 +41,7 @@ const AuthForm = () => {
         return res.json().then((data)=>{
           console.log("login data",data)
           cartCtx.login(data.idToken)
-          navigate('/')
+          navigate('/store')
 
         })
         }

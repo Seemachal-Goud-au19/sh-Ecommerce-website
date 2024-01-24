@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Routes, Route, Navigate,Redirect } from 'react-router-dom';
+import { Routes, Route, Navigate, Redirect } from 'react-router-dom';
 import Store from './routes/Store/Store';
 import About from './routes/About/About';
 import Home from './routes/Home/Home';
@@ -28,7 +28,7 @@ function App() {
         />
         <Route
           path="/store"
-          element={<Store isShowCart={isShowCart} setIsShowCart={setIsShowCart} />}
+          element={cartCtx.isLoggedIn ? <Store isShowCart={isShowCart} setIsShowCart={setIsShowCart} /> : <Navigate to='/login' />}
         />
         <Route
           path="/store/:productID"
@@ -48,15 +48,15 @@ function App() {
           element={<AuthForm />}
         />}
 
-        <Route
+        {/* <Route
           path="/profile"
           element={cartCtx.isLoggedIn ? <ProfilePage /> : <Navigate to='/login' />}
-        />
-        <Route
+        /> */}
+        {/* <Route
           path="/api"
           element={<FetchAPI />}
-        />
-         <Route
+        /> */}
+        <Route
           path="*"
           element={<Navigate to='/' />}
         />
