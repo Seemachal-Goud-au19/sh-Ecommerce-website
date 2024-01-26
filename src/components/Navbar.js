@@ -21,7 +21,7 @@ const NavBar = ({ setIsShowCart }) => {
                 {!pathname.includes('about') &&
                     <div>
                         <Button variant="outline-info" onClick={() => setIsShowCart(true)}>Cart</Button>
-                        <span className='cart-number' style={{ color: 'white' }}>{numberOfCartItems}</span>
+                        <span className='cart-number' style={{ color: 'white' }}>{cartCtx.numberOfCartItems}</span>
                     </div>
                 }
             </Container>

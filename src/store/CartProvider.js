@@ -1,15 +1,52 @@
 import React, { useReducer, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CartContext from './cart-context'
+import axios from 'axios';
 
 const defaultState = {
   items: [],
-  totalAmount: 0
+  totalAmount: 0,
+  numberOfCartItems: 0,
+  userEmail: localStorage.getItem('email'),
 }
+
+//for crud crud api
+const cartProductsInBackendHandler = async (updatedItems, updatedTotalAmount, userEmail) => {
+
+  // Remove @ and . from email using regular expressions
+  const modifiedEmail = localStorage.getItem('email').replace(/[@.]/g, '');
+
+  const response = await axios.get(`https://crudcrud.com/api/5253eb73e9854a13ad4e993362ae7839/cart${modifiedEmail}`)
+
+  if (response?.data?.length === 0) {
+    axios.post(`https://crudcrud.com/api/5253eb73e9854a13ad4e993362ae7839/cart${modifiedEmail}`, {
+      items: updatedItems,
+      totalAmount: updatedTotalAmount,
+    }).then((response) => {
+
+    }).catch((error) => {
+      console.log(error)
+    })
+  }
+  else if (response?.data?.length > 0) {
+    axios.put(`https://crudcrud.com/api/5253eb73e9854a13ad4e993362ae7839/cart${modifiedEmail}/${response.data[0]?._id}`, {
+      items: updatedItems,
+      totalAmount: updatedTotalAmount,
+    }).then((response) => {
+
+    }).catch((error) => {
+      console.log(error)
+    })
+  }
+
+
+}
+
+
 
 const cartReducer = (state, action) => {
   if (action.type === "ADD") {
-    console.log("context", action.item)
+
     const updatedTotalAmount =
       state.totalAmount + action.item.price * action.item.quantity;
 
@@ -31,30 +68,28 @@ const cartReducer = (state, action) => {
       updatedItems = [...state.items, action.item]
     }
 
+    cartProductsInBackendHandler(updatedItems, updatedTotalAmount, state.userEmail)
     return {
       items: updatedItems,
       totalAmount: updatedTotalAmount,
     };
   }
 
-  if (action.type === "REMOVE") {
-    const existingCartItemIndex = state.items.findIndex(
-      (item) => item.id === action.id
-    );
-    const existingItem = state.items[existingCartItemIndex];
-    const updatedTotalAmount = state.totalAmount - existingItem.price;
-    let updatedItems;
-    if (existingItem.quantity === 1) {
-      updatedItems = state.items.filter(item => item.id !== action.id);
-    } else {
-      const updatedItem = { ...existingItem, quantity: existingItem.quantity - 1 };
-      updatedItems = [...state.items];
-      updatedItems[existingCartItemIndex] = updatedItem;
-    }
+
+
+  if (action.type === 'LOGIN') {
     return {
-      items: updatedItems,
-      totalAmount: updatedTotalAmount,
-    };
+      items: state.items,
+      totalAmount: state.totalAmount,
+      userEmail: action.email
+    }
+  }
+
+  if (action.type === 'CARTITEMS') {
+    return {
+      ...state,
+      numberOfCartItems: action.numberOfCartItems
+    }
   }
 
 }
@@ -64,27 +99,34 @@ export const CartProvider = (props) => {
   const [cartState, dispatch] = useReducer(cartReducer, defaultState);
   const initialToken = localStorage.getItem('token'); //getting token from localstorage
   const [token, setToken] = useState(initialToken);
+  // const [userEmail, setUserEmail] = useState(null);
   const navigate = useNavigate();
 
   const addItemToCartHandler = (item) => {
     dispatch({ type: 'ADD', item })
   }
 
-  const removeItemFromCartHandler = (id) => {
-    dispatch({ type: 'REMOVE', id })
-  }
+  // const removeItemFromCartHandler = (id) => {
+  //   dispatch({ type: 'REMOVE', id })
+  // }
+
 
   //for login
   const userIsLoggedIn = !!token;
 
-  const loginHandler = (token) => {
+  const loginHandler = (token, email) => {
     setToken(token)
+    // setUserEmail(email)
+    dispatch({ type: 'LOGIN', email })
     localStorage.setItem('token', token)
+    localStorage.setItem('email', email)
   }
 
   const logoutHandler = () => {
     setToken(null);
+    // setUserEmail(null)
     localStorage.removeItem('token')
+    localStorage.removeItem('email')
     navigate('/login')
   }
 
@@ -95,8 +137,11 @@ export const CartProvider = (props) => {
   const cartContextValues = {
     items: cartState.items,
     totalAmount: cartState.totalAmount,
+    numberOfCartItems: cartState.numberOfCartItems,
+    userEmail: cartState.userEmail,
     addItem: addItemToCartHandler,
-    removeItem: removeItemFromCartHandler,
+    // removeItem: removeItemFromCartHandler,
+    dispatch,
     //for login
     token: token,
     isLoggedIn: userIsLoggedIn,

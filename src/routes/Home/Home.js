@@ -4,13 +4,13 @@ import './Home.css'
 
  const Home = () => {
   return (
-    <section id="tours" class="container">
+    <section id="tours" className="container">
     <h2>TOURS</h2>
     <div>
-        <div class="tour-item">
-            <span class="tour-date">JUL16</span>
-            <span class="tour-place">DETROIT, MI</span>
-            <span class="tour-spec-place">DTE ENERGY MUSIC THEATRE</span>
+        <div className="tour-item">
+            <span className="tour-date">JUL16</span>
+            <span className="tour-place">DETROIT, MI</span>
+            <span className="tour-spec-place">DTE ENERGY MUSIC THEATRE</span>
             <Button variant="info" className="buy-btn">BUY TICKETS</Button>
         </div>
         <div className="tour-item">

@@ -38,12 +38,11 @@ const AuthForm = () => {
       }).then((res) => {
         setIsLoading(false)
         if (res.ok) {
-        return res.json().then((data)=>{
-          console.log("login data",data)
-          cartCtx.login(data.idToken)
-          navigate('/store')
+          return res.json().then((data) => {
+            cartCtx.login(data.idToken, data.email)
+            navigate('/store')
 
-        })
+          })
         }
         else {
           return res.json().then((data) => {
@@ -103,7 +102,7 @@ const AuthForm = () => {
             ref={passwordInputRef}
           />
         </div>
-        {isLoading ? <p className='loading'>Sending request....</p>: <div className=''>
+        {isLoading ? <p className='loading'>Sending request....</p> : <div className=''>
           <button
             type='submit'
             className='toggle'
