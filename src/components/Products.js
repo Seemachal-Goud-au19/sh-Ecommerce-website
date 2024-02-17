@@ -18,7 +18,7 @@ const Products = ({ item }) => {
     // Remove @ and . from email using regular expressions
     const modifiedEmail = localStorage.getItem('email').replace(/[@.]/g, '');
 
-    const response = await axios.get(`https://crudcrud.com/api/5253eb73e9854a13ad4e993362ae7839/cart${modifiedEmail}`)
+    const response = await axios.get(`https://crudcrud.com/api/b6b9e3b1d18b4953a1a8419a6d51514d/cart${modifiedEmail}`)
 
     if (response?.data?.length === 0) {
       //
@@ -27,7 +27,7 @@ const Products = ({ item }) => {
       let updatedItems;
       updatedItems = [...state.items, item]
       //
-      axios.post(`https://crudcrud.com/api/5253eb73e9854a13ad4e993362ae7839/cart${modifiedEmail}`, {
+      axios.post(`https://crudcrud.com/api/b6b9e3b1d18b4953a1a8419a6d51514d/cart${modifiedEmail}`, {
         items: updatedItems,
         totalAmount: updatedTotalAmount,
       }).then((response) => {
@@ -62,7 +62,7 @@ const Products = ({ item }) => {
       } else {
         updatedItems = [...state.items, item]
       }
-      axios.put(`https://crudcrud.com/api/5253eb73e9854a13ad4e993362ae7839/cart${modifiedEmail}/${response.data[0]?._id}`, {
+      axios.put(`https://crudcrud.com/api/b6b9e3b1d18b4953a1a8419a6d51514d/cart${modifiedEmail}/${response.data[0]?._id}`, {
         items: updatedItems,
         totalAmount: updatedTotalAmount,
       }).then((response) => {
@@ -74,19 +74,19 @@ const Products = ({ item }) => {
   }
 
   return (
-    <>
+    <div className=''>
       <h3>{title}</h3>
       {/* <Link to={`/store/:${productID}`}> */}
       <Card style={{ width: '18rem' }}>
-        <Card.Img variant="top" src={imageUrl} />
+        <Card.Img  src={imageUrl} />
 
-        <Card.Body>
+        <Card.Body className='card-body'>
           <p>${price}</p>
           <Button variant="info" onClick={addAmountNumberandler} >ADD TO CART</Button>
         </Card.Body>
       </Card>
       {/* </Link> */}
-    </>
+    </div>
   )
 }
 

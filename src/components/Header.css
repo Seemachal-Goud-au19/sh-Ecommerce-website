@@ -1,3 +1,18 @@
+
+.header{
+    text-align: center;
+    margin: 0;
+    padding: 0px;
+    padding-bottom: 30px;
+    background: #777;
+    color: white;
+}
+
+.header h1{
+    padding: 40px;
+    font-size: 100px;
+}
+
 .header .latest-album{
     display: block;
     border: 1px solid #56CCF2;

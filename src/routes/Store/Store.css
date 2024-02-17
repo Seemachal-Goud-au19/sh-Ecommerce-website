@@ -1,0 +1,9 @@
+.cart-btn-bottom {
+    display: flex;
+    padding: 15px;
+    background-color: #777;
+    border: none;
+    border-radius: 7px;
+    margin: auto;
+    cursor: pointer;
+}

@@ -5,6 +5,8 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
+import './ProductList.css'
+
 const cartElements = [
 
     {
@@ -47,17 +49,17 @@ const cartElements = [
 
 const ProductList = () => {
     return (
-        <Container>
-            <h3 style={{ marginLeft: '50%' }}>Music</h3>
-            <Row>
+        <section id="music" class="container">
+            <h2>Music</h2>
+          <div className='content'>
         {cartElements.map((item)=> <Products key={item.id} item={item} />)}
-           
-                
-            </Row>
-        
-        </Container>
+        </div>
+        </section>
+          
     );
 }
 
 export default ProductList
+
+
 
