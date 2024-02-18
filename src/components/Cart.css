@@ -9,7 +9,9 @@
     border: 1px solid rgb(177, 103, 103);
     min-height: 50vh;
     max-width: 30vw;
+    margin-top: 4rem;
 }
+
 
 #cart h2 {
     margin: 20px 0px;
@@ -56,7 +58,7 @@
 }
 
 
-.cart_img {
+.cart-img {
     width: 80px;
     border-radius: 8%;
     margin-right: 20px;

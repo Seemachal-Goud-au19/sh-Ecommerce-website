@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { Routes, Route, Navigate, Redirect } from 'react-router-dom';
+
 import Store from './routes/Store/Store';
 import About from './routes/About/About';
 import Home from './routes/Home/Home';
@@ -17,7 +18,7 @@ function App() {
   const [isShowCart, setIsShowCart] = useState(false)
   const cartCtx = useContext(CartContext)
 
-  return (
+return (
     <>
       <Header setIsShowCart={setIsShowCart} />
 

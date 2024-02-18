@@ -20,7 +20,7 @@ const Cart = ({ setIsShowCart }) => {
         // Remove @ and . from email using regular expressions
         const modifiedEmail = localStorage.getItem('email').replace(/[@.]/g, '');
 
-        const response = await axios.get(`https://crudcrud.com/api/b6b9e3b1d18b4953a1a8419a6d51514d/cart${modifiedEmail}`)
+        const response = await axios.get(`https://crudcrud.com/api/a2d45d1173484547ace0192c45f9a31c/cart${modifiedEmail}`)
 
         const products = response.data[0]
         const existingCartItemIndex = products.items.findIndex(
@@ -37,7 +37,7 @@ const Cart = ({ setIsShowCart }) => {
             updatedItems[existingCartItemIndex] = updatedItem;
         }
 
-        axios.put(`https://crudcrud.com/api/b6b9e3b1d18b4953a1a8419a6d51514d/cart${modifiedEmail}/${response.data[0]?._id}`, {
+        axios.put(`https://crudcrud.com/api/a2d45d1173484547ace0192c45f9a31c/cart${modifiedEmail}/${response.data[0]?._id}`, {
             items: updatedItems,
             totalAmount: updatedTotalAmount,
         }).then((response) => {
@@ -45,6 +45,14 @@ const Cart = ({ setIsShowCart }) => {
         }).catch((error) => {
             console.log(error)
         })
+
+        cartCtx.dispatch({
+            type:'ISDELETEADD'
+          })
+    }
+
+    const purchaseHandler = ()=>{
+       
     }
 
     const getProductItems = async () => {
@@ -52,7 +60,7 @@ const Cart = ({ setIsShowCart }) => {
         // Remove @ and . from email using regular expressions
         const modifiedEmail = localStorage.getItem('email').replace(/[@.]/g, '');
 
-        const response = await axios.get(`https://crudcrud.com/api/b6b9e3b1d18b4953a1a8419a6d51514d/cart${modifiedEmail}`);
+        const response = await axios.get(`https://crudcrud.com/api/a2d45d1173484547ace0192c45f9a31c/cart${modifiedEmail}`);
         setCartData({
             itemList: response?.data[0]?.items || [],
             cartAmount: response?.data[0]?.totalAmount || 0
@@ -62,7 +70,7 @@ const Cart = ({ setIsShowCart }) => {
 
     useEffect(() => {
         getProductItems()
-    }, [])
+    }, [cartCtx.isDeleteAdd])
 
     return (
         <section id="cart" className="container">
@@ -77,7 +85,7 @@ const Cart = ({ setIsShowCart }) => {
             <div class="cart-items">
                 {cartData?.itemList.length > 0 && cartData?.itemList.map((item) => <div class="cart-row">
                     <span class='cart-item cart-column'>
-                        {/* <img class='cart-img' src="" alt="" /> */}
+                        <img class='cart-img' src={item.imageUrl} alt="" />
                         <span>{item.title}</span>
                     </span>
                     {/* price */}
@@ -98,7 +106,7 @@ const Cart = ({ setIsShowCart }) => {
             $<span id="total-value">{cartData?.cartAmount}</span>
         </span>
     </div>
-    <button class="purchase-btn" type="button">PURCHASE</button>
+    <button class="purchase-btn" type="button" onClick={purchaseHandler}>PURCHASE</button>
 </section>
 
             /////////////

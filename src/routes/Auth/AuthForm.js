@@ -1,6 +1,7 @@
 import { useState, useRef, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CartContext from '../../store/cart-context';
+
 import './AuthForm.css';
 
 
@@ -81,10 +82,9 @@ const AuthForm = () => {
         }
       })
     }
+ }
 
 
-
-  }
   return (
     <section className='auth'>
       <h1>{isLogin ? 'Login' : 'Sign Up'}</h1>

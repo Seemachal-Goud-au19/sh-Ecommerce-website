@@ -7,6 +7,7 @@ import axios from 'axios';
 
 const Products = ({ item }) => {
   const { id, productID, title, price, imageUrl, quantity, imageList } = item;
+  const cartCtx = useContext(CartContext)
 
   const addAmountNumberandler = async () => {
 
@@ -18,7 +19,7 @@ const Products = ({ item }) => {
     // Remove @ and . from email using regular expressions
     const modifiedEmail = localStorage.getItem('email').replace(/[@.]/g, '');
 
-    const response = await axios.get(`https://crudcrud.com/api/b6b9e3b1d18b4953a1a8419a6d51514d/cart${modifiedEmail}`)
+    const response = await axios.get(`https://crudcrud.com/api/a2d45d1173484547ace0192c45f9a31c/cart${modifiedEmail}`)
 
     if (response?.data?.length === 0) {
       //
@@ -27,11 +28,14 @@ const Products = ({ item }) => {
       let updatedItems;
       updatedItems = [...state.items, item]
       //
-      axios.post(`https://crudcrud.com/api/b6b9e3b1d18b4953a1a8419a6d51514d/cart${modifiedEmail}`, {
+      axios.post(`https://crudcrud.com/api/a2d45d1173484547ace0192c45f9a31c/cart${modifiedEmail}`, {
         items: updatedItems,
         totalAmount: updatedTotalAmount,
       }).then((response) => {
-
+          cartCtx.dispatch({
+            type:'CARTITEMS',
+            numberOfCartItems:updatedItems?.length
+          })
       }).catch((error) => {
         console.log(error)
       })
@@ -62,15 +66,23 @@ const Products = ({ item }) => {
       } else {
         updatedItems = [...state.items, item]
       }
-      axios.put(`https://crudcrud.com/api/b6b9e3b1d18b4953a1a8419a6d51514d/cart${modifiedEmail}/${response.data[0]?._id}`, {
+      axios.put(`https://crudcrud.com/api/a2d45d1173484547ace0192c45f9a31c/cart${modifiedEmail}/${response.data[0]?._id}`, {
         items: updatedItems,
         totalAmount: updatedTotalAmount,
       }).then((response) => {
-
+        cartCtx.dispatch({
+          type:'CARTITEMS',
+          numberOfCartItems:updatedItems?.length
+        })
       }).catch((error) => {
         console.log(error)
       })
     }
+
+    cartCtx.dispatch({
+      type:'ISDELETEADD'
+    })
+  
   }
 
   return (

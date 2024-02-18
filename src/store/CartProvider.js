@@ -8,6 +8,7 @@ const defaultState = {
   totalAmount: 0,
   numberOfCartItems: 0,
   userEmail: localStorage.getItem('email'),
+  isDeleteAdd:false
 }
 
 //for crud crud api
@@ -16,10 +17,10 @@ const cartProductsInBackendHandler = async (updatedItems, updatedTotalAmount, us
   // Remove @ and . from email using regular expressions
   const modifiedEmail = localStorage.getItem('email').replace(/[@.]/g, '');
 
-  const response = await axios.get(`https://crudcrud.com/api/b6b9e3b1d18b4953a1a8419a6d51514d/cart${modifiedEmail}`)
+  const response = await axios.get(`https://crudcrud.com/api/a2d45d1173484547ace0192c45f9a31c/cart${modifiedEmail}`)
 
   if (response?.data?.length === 0) {
-    axios.post(`https://crudcrud.com/api/b6b9e3b1d18b4953a1a8419a6d51514d/cart${modifiedEmail}`, {
+    axios.post(`https://crudcrud.com/api/a2d45d1173484547ace0192c45f9a31c/cart${modifiedEmail}`, {
       items: updatedItems,
       totalAmount: updatedTotalAmount,
     }).then((response) => {
@@ -29,7 +30,7 @@ const cartProductsInBackendHandler = async (updatedItems, updatedTotalAmount, us
     })
   }
   else if (response?.data?.length > 0) {
-    axios.put(`https://crudcrud.com/api/b6b9e3b1d18b4953a1a8419a6d51514d/cart${modifiedEmail}/${response.data[0]?._id}`, {
+    axios.put(`https://crudcrud.com/api/a2d45d1173484547ace0192c45f9a31c/cart${modifiedEmail}/${response.data[0]?._id}`, {
       items: updatedItems,
       totalAmount: updatedTotalAmount,
     }).then((response) => {
@@ -92,6 +93,13 @@ const cartReducer = (state, action) => {
     }
   }
 
+  if (action.type === 'ISDELETEADD') {
+    return {
+      ...state,
+      isDeleteAdd:!state.isDeleteAdd
+    }
+  }
+
 }
 
 
@@ -130,15 +138,16 @@ export const CartProvider = (props) => {
     navigate('/login')
   }
 
-  setTimeout(()=>{
-    localStorage.removeItem('token')
-  },5000*12*5) // token active for 5 min
+  // setTimeout(()=>{
+  //   localStorage.removeItem('token')
+  // },5000*12*5) // token active for 5 min
 
   const cartContextValues = {
     items: cartState.items,
     totalAmount: cartState.totalAmount,
     numberOfCartItems: cartState.numberOfCartItems,
     userEmail: cartState.userEmail,
+    isDeleteAdd:cartState.isDeleteAdd,
     addItem: addItemToCartHandler,
     // removeItem: removeItemFromCartHandler,
     dispatch,
