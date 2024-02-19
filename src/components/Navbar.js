@@ -12,6 +12,22 @@ const NavBar = ({ setIsShowCart }) => {
     const { pathname } = useLocation();
 
 
+    const getProductItems = async () => {
+
+        // Remove @ and . from email using regular expressions
+        const modifiedEmail = localStorage.getItem('email')?.replace(/[@.]/g, '');
+
+        const response = await axios.get(`https://crudcrud.com/api/92bae8db60644641be91754d3e1dcaab/cart${modifiedEmail}`);
+       
+        cartCtx.dispatch({ type: 'CARTITEMS', numberOfCartItems: response?.data[0]?.items.length || 0 })
+    }
+
+    useEffect(() => {
+        getProductItems()
+    }, [cartCtx.numberOfCartItems])
+
+    console.log("NAVABARA")
+
     return (
         <Navbar expand="lg" className="" style={{ backgroundColor: 'black' }}>
             <Container>

@@ -41,6 +41,7 @@ const AuthForm = () => {
         if (res.ok) {
           return res.json().then((data) => {
             cartCtx.login(data.idToken, data.email)
+          
             navigate('/store')
 
           })

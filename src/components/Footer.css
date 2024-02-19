@@ -20,3 +20,17 @@ footer .footer-icons {
     align-items: center;
     justify-content: space-around;
 }
+
+.footer-icons .youtube,
+.spotify,
+.fb {
+    font-size: 30px;
+}
+
+.footer-icons .youtube {
+    color: red
+}
+
+.footer-icons .spotify {
+    color: green
+}

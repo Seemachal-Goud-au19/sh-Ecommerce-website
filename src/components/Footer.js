@@ -14,9 +14,9 @@ const Footer = () => {
         </div>
         <div class="footer-icons">
             <ul>
-                <li><Link to=''><FaYoutube /></Link></li>
-                <li><Link to=''><SiSpotify /></Link></li>
-                <li><Link to=''><FaFacebookSquare /></Link></li>
+                <li><Link to='https://www.youtube.com/' className='youtube'><FaYoutube /></Link></li>
+                <li><Link to='https://open.spotify.com/' className='spotify'><SiSpotify /></Link></li>
+                <li><Link to='https://www.facebook.com/' className='fb'><FaFacebookSquare /></Link></li>
             </ul>
         </div>
     </footer>
