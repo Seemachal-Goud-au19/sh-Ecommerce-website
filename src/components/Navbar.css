@@ -1,0 +1,15 @@
+.navbar .profile-icon {
+    font-size: 30px;
+    position: absolute;
+    right: 200px;
+
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+}
+
+.navbar .active{
+    border-bottom: 2px solid blue;
+ }

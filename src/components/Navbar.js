@@ -1,4 +1,4 @@
-import React, { useContext,useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { useLocation, NavLink } from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
@@ -6,11 +6,17 @@ import Button from 'react-bootstrap/Button';
 import CartContext from '../store/cart-context';
 import axios from 'axios';
 
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
+import Tooltip from 'react-bootstrap/Tooltip';
+import { CgProfile } from "react-icons/cg";
+
+import './Navbar.css'
+
 const NavBar = ({ setIsShowCart }) => {
     const cartCtx = useContext(CartContext)
-    const numberOfCartItems = cartCtx.items.length
+    // const numberOfCartItems = cartCtx.items.length
     const { pathname } = useLocation();
-
+    const userEmail = localStorage.getItem('email')
 
     const getProductItems = async () => {
 
@@ -18,7 +24,7 @@ const NavBar = ({ setIsShowCart }) => {
         const modifiedEmail = localStorage.getItem('email')?.replace(/[@.]/g, '');
 
         const response = await axios.get(`https://crudcrud.com/api/92bae8db60644641be91754d3e1dcaab/cart${modifiedEmail}`);
-       
+
         cartCtx.dispatch({ type: 'CARTITEMS', numberOfCartItems: response?.data[0]?.items.length || 0 })
     }
 
@@ -26,15 +32,14 @@ const NavBar = ({ setIsShowCart }) => {
         getProductItems()
     }, [cartCtx.numberOfCartItems])
 
-    console.log("NAVABARA")
 
     return (
-        <Navbar expand="lg" className="" style={{ backgroundColor: 'black' }}>
+        <Navbar expand="lg" className="navbar" style={{ backgroundColor: 'black' }}>
             <Container>
-                <NavLink to="/" style={{ color: 'white' }}>HOME</NavLink>
-                <NavLink to="/store" style={{ color: 'white' }}>STORE</NavLink >
-                <NavLink to="/about" style={{ color: 'white' }}>ABOUT</NavLink >
-                <NavLink to="/contact" style={{ color: 'white' }}>CONTACT</NavLink >
+                <NavLink to="/">HOME</NavLink>
+                <NavLink to="/store">STORE</NavLink >
+                <NavLink to="/about">ABOUT</NavLink >
+                <NavLink to="/contact">CONTACT</NavLink >
                 {/* {cartCtx.isLoggedIn && <NavLink to='/profile'>Profile</NavLink>} */}
                 {!cartCtx.isLoggedIn ? <NavLink to="/login" style={{ color: 'white' }}>Login</NavLink > : <button onClick={cartCtx.logout}>Logout</button>}
                 {(pathname.includes('store') && cartCtx.isLoggedIn) &&
@@ -43,6 +48,11 @@ const NavBar = ({ setIsShowCart }) => {
                         <span className='cart-number' style={{ color: 'white' }}>{cartCtx.numberOfCartItems}</span>
                     </div>
                 }
+                {cartCtx.isLoggedIn && <OverlayTrigger
+                    placement="bottom"
+                    overlay={<Tooltip id="button-tooltip-2">{userEmail}</Tooltip>}>
+                    <span className="profile-icon"><CgProfile /></span>
+                </OverlayTrigger>}
             </Container>
         </Navbar>
     );

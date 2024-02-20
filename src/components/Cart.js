@@ -47,32 +47,32 @@ const Cart = ({ setIsShowCart }) => {
         })
 
         cartCtx.dispatch({
-            type:'ISDELETEADD'
-          })
+            type: 'ISDELETEADD'
+        })
     }
 
-    const purchaseHandler = async ()=>{
-       // Remove @ and . from email using regular expressions
-    const modifiedEmail = localStorage.getItem('email').replace(/[@.]/g, '');
-    const response = await axios.get(`https://crudcrud.com/api/92bae8db60644641be91754d3e1dcaab/cart${modifiedEmail}`)
+    const purchaseHandler = async () => {
+        // Remove @ and . from email using regular expressions
+        const modifiedEmail = localStorage.getItem('email').replace(/[@.]/g, '');
+        const response = await axios.get(`https://crudcrud.com/api/92bae8db60644641be91754d3e1dcaab/cart${modifiedEmail}`)
 
-     await axios.put(`https://crudcrud.com/api/92bae8db60644641be91754d3e1dcaab/cart${modifiedEmail}/${response.data[0]?._id}`, {
-        items: [],
-        totalAmount: 0,
-      }).then((response) => {
-          cartCtx.dispatch({
-            type:'CARTITEMS',
-            numberOfCartItems:0
-          })
-          cartCtx.dispatch({
-            type:'ISDELETEADD'
-          })
-          alert("Thank you for purchase")
-      }).catch((error) => {
-        console.log(error)
-      })
-    
-}
+        await axios.put(`https://crudcrud.com/api/92bae8db60644641be91754d3e1dcaab/cart${modifiedEmail}/${response.data[0]?._id}`, {
+            items: [],
+            totalAmount: 0,
+        }).then((response) => {
+            cartCtx.dispatch({
+                type: 'CARTITEMS',
+                numberOfCartItems: 0
+            })
+            cartCtx.dispatch({
+                type: 'ISDELETEADD'
+            })
+            alert("Thank you for purchase")
+        }).catch((error) => {
+            console.log(error)
+        })
+
+    }
 
     const getProductItems = async () => {
 
@@ -111,7 +111,7 @@ const Cart = ({ setIsShowCart }) => {
                     <span class='cart-price cart-column'>{item.price}</span>
                     {/* quantity */}
                     <span class='cart-quantity cart-column'>
-                        <input type="text" value={item.quantity}/>
+                        <input type="text" value={item.quantity} />
                         <button onClick={() => { onRemoveCart(item.id) }}>REMOVE</button>
                     </span>
                 </div>)}
@@ -119,40 +119,16 @@ const Cart = ({ setIsShowCart }) => {
             </div>
 
             <div class="cart-total">
-        <span>
-            <span class="total-title"> <strong>Total</strong>
-            </span>
-            $<span id="total-value">{cartData?.cartAmount}</span>
-        </span>
-    </div>
-    <button class="purchase-btn" type="button" onClick={purchaseHandler}>PURCHASE</button>
-</section>
+                <span>
+                    <span class="total-title"> <strong>Total</strong>
+                    </span>
+                    $<span id="total-value">{cartData?.cartAmount}</span>
+                </span>
+            </div>
+            <button class="purchase-btn" type="button" onClick={purchaseHandler}>PURCHASE</button>
+        </section>
 
-            /////////////
-        //     <Container>
-        //         <Row style={{ fontWeight: '600', textDecorationLine: 'underline' }}>
-        //             <Col>ITEM</Col>
-        //             <Col>PRICE</Col>
-        //             <Col>QUANTITY</Col>
-        //             <Col>ACTION</Col>
-        //         </Row>
-        //         {cartData?.itemList.length > 0 && cartData?.itemList.map((item) => <Row>
-        //             <Col>{item.title}</Col>
-        //             <Col>{item.price}</Col>
-        //             <Col>{item.quantity}</Col>
-        //             <Col><button onClick={() => { onRemoveCart(item.id) }}>remove</button></Col>
-        //         </Row>)}
 
-        //     </Container>
-        //     <div className="cart-total">
-        //         <span>
-        //             <span className="total-title"> <strong>Total</strong>
-        //             </span>
-        //             $<span id="total-value">{cartData?.cartAmount}</span>
-        //         </span>
-        //     </div>
-        //     <Button variant="info" style={{ color: 'white' }}>PURCHASE</Button>{' '}
-        // </section>
     )
 }
 
