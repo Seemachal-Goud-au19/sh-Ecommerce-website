@@ -20,7 +20,7 @@ const Cart = ({ setIsShowCart }) => {
         // Remove @ and . from email using regular expressions
         const modifiedEmail = localStorage.getItem('email').replace(/[@.]/g, '');
 
-        const response = await axios.get(`https://crudcrud.com/api/92bae8db60644641be91754d3e1dcaab/cart${modifiedEmail}`)
+        const response = await axios.get(`https://crudcrud.com/api/7ce2ae1555d74a348b6255c35b542b41/cart${modifiedEmail}`)
 
         const products = response.data[0]
         const existingCartItemIndex = products.items.findIndex(
@@ -37,7 +37,7 @@ const Cart = ({ setIsShowCart }) => {
             updatedItems[existingCartItemIndex] = updatedItem;
         }
 
-        axios.put(`https://crudcrud.com/api/92bae8db60644641be91754d3e1dcaab/cart${modifiedEmail}/${response.data[0]?._id}`, {
+        axios.put(`https://crudcrud.com/api/7ce2ae1555d74a348b6255c35b542b41/cart${modifiedEmail}/${response.data[0]?._id}`, {
             items: updatedItems,
             totalAmount: updatedTotalAmount,
         }).then((response) => {
@@ -54,9 +54,9 @@ const Cart = ({ setIsShowCart }) => {
     const purchaseHandler = async () => {
         // Remove @ and . from email using regular expressions
         const modifiedEmail = localStorage.getItem('email').replace(/[@.]/g, '');
-        const response = await axios.get(`https://crudcrud.com/api/92bae8db60644641be91754d3e1dcaab/cart${modifiedEmail}`)
+        const response = await axios.get(`https://crudcrud.com/api/7ce2ae1555d74a348b6255c35b542b41/cart${modifiedEmail}`)
 
-        await axios.put(`https://crudcrud.com/api/92bae8db60644641be91754d3e1dcaab/cart${modifiedEmail}/${response.data[0]?._id}`, {
+        await axios.put(`https://crudcrud.com/api/7ce2ae1555d74a348b6255c35b542b41/cart${modifiedEmail}/${response.data[0]?._id}`, {
             items: [],
             totalAmount: 0,
         }).then((response) => {
@@ -79,12 +79,47 @@ const Cart = ({ setIsShowCart }) => {
         // Remove @ and . from email using regular expressions
         const modifiedEmail = localStorage.getItem('email').replace(/[@.]/g, '');
 
-        const response = await axios.get(`https://crudcrud.com/api/92bae8db60644641be91754d3e1dcaab/cart${modifiedEmail}`);
+        const response = await axios.get(`https://crudcrud.com/api/7ce2ae1555d74a348b6255c35b542b41/cart${modifiedEmail}`);
         setCartData({
             itemList: response?.data[0]?.items || [],
             cartAmount: response?.data[0]?.totalAmount || 0
         })
         cartCtx.dispatch({ type: 'CARTITEMS', numberOfCartItems: response?.data[0]?.items.length || 0 })
+    }
+
+
+    const onChangeQuantity = async (id) => {
+        // Remove @ and . from email using regular expressions
+        const modifiedEmail = localStorage.getItem('email').replace(/[@.]/g, '');
+
+        const response = await axios.get(`https://crudcrud.com/api/7ce2ae1555d74a348b6255c35b542b41/cart${modifiedEmail}`)
+
+        const products = response.data[0]
+        const existingCartItemIndex = products.items.findIndex(
+            (item) => item.id === id
+        );
+        const existingItem = products.items[existingCartItemIndex];
+        const updatedTotalAmount = products.totalAmount + existingItem.price;
+        let updatedItems;
+
+        const updatedItem = { ...existingItem, quantity: existingItem.quantity + 1 };
+        updatedItems = [...products.items];
+        updatedItems[existingCartItemIndex] = updatedItem;
+
+
+        axios.put(`https://crudcrud.com/api/7ce2ae1555d74a348b6255c35b542b41/cart${modifiedEmail}/${response.data[0]?._id}`, {
+            items: updatedItems,
+            totalAmount: updatedTotalAmount,
+        }).then((response) => {
+            console.log("ADD response", response)
+        }).catch((error) => {
+            console.log(error)
+        })
+
+        cartCtx.dispatch({
+            type: 'ISDELETEADD'
+        })
+
     }
 
     useEffect(() => {
@@ -111,8 +146,10 @@ const Cart = ({ setIsShowCart }) => {
                     <span class='cart-price cart-column'>{item.price}</span>
                     {/* quantity */}
                     <span class='cart-quantity cart-column'>
+                        <button class='remove-cart-btn'  onClick={() => { onRemoveCart(item.id) }}>-</button>
                         <input type="text" value={item.quantity} />
-                        <button onClick={() => { onRemoveCart(item.id) }}>REMOVE</button>
+                        <button onClick={() => { onChangeQuantity(item.id) }}>+</button>
+
                     </span>
                 </div>)}
 

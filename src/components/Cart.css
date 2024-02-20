@@ -98,6 +98,11 @@
     padding: 0px 7px;
 }
 
+.cart-quantity .remove-cart-btn{
+    margin-right: 1.5rem;
+    width: 1.5rem;
+}
+
 .cart-total {
     display: flex;
     flex-direction: row-reverse;

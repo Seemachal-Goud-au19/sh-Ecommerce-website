@@ -33,7 +33,7 @@ const Contact = ({ addMovieshandler }) => {
   };
 
   return (
-    <div className="form-container">
+    <div className="form-container contact">
       <h2>Contact</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
