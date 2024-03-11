@@ -67,12 +67,7 @@ const ProductList = () => {
         {cartElements.map((item)=> <Products key={item.id} item={item} />)}
         </div>
         </section>
-         <section id="music" class="container">
-         <h2>Music</h2>
-       <div className='content'>
-     {cartElements.map((item)=> <Products key={item.id} item={item} />)}
-     </div>
-     </section>
+        
      </>    
     );
 }

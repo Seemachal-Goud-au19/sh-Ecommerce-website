@@ -20,7 +20,7 @@ const Cart = ({ setIsShowCart }) => {
         // Remove @ and . from email using regular expressions
         const modifiedEmail = localStorage.getItem('email').replace(/[@.]/g, '');
 
-        const response = await axios.get(`https://crudcrud.com/api/7ce2ae1555d74a348b6255c35b542b41/cart${modifiedEmail}`)
+        const response = await axios.get(`https://crudcrud.com/api/a007a6d4eac247abbc429216d38717e6/cart${modifiedEmail}`)
 
         const products = response.data[0]
         const existingCartItemIndex = products.items.findIndex(
@@ -37,7 +37,7 @@ const Cart = ({ setIsShowCart }) => {
             updatedItems[existingCartItemIndex] = updatedItem;
         }
 
-        axios.put(`https://crudcrud.com/api/7ce2ae1555d74a348b6255c35b542b41/cart${modifiedEmail}/${response.data[0]?._id}`, {
+        axios.put(`https://crudcrud.com/api/a007a6d4eac247abbc429216d38717e6/cart${modifiedEmail}/${response.data[0]?._id}`, {
             items: updatedItems,
             totalAmount: updatedTotalAmount,
         }).then((response) => {
@@ -54,9 +54,9 @@ const Cart = ({ setIsShowCart }) => {
     const purchaseHandler = async () => {
         // Remove @ and . from email using regular expressions
         const modifiedEmail = localStorage.getItem('email').replace(/[@.]/g, '');
-        const response = await axios.get(`https://crudcrud.com/api/7ce2ae1555d74a348b6255c35b542b41/cart${modifiedEmail}`)
+        const response = await axios.get(`https://crudcrud.com/api/a007a6d4eac247abbc429216d38717e6/cart${modifiedEmail}`)
 
-        await axios.put(`https://crudcrud.com/api/7ce2ae1555d74a348b6255c35b542b41/cart${modifiedEmail}/${response.data[0]?._id}`, {
+        await axios.put(`https://crudcrud.com/api/a007a6d4eac247abbc429216d38717e6/cart${modifiedEmail}/${response.data[0]?._id}`, {
             items: [],
             totalAmount: 0,
         }).then((response) => {
@@ -79,7 +79,7 @@ const Cart = ({ setIsShowCart }) => {
         // Remove @ and . from email using regular expressions
         const modifiedEmail = localStorage.getItem('email').replace(/[@.]/g, '');
 
-        const response = await axios.get(`https://crudcrud.com/api/7ce2ae1555d74a348b6255c35b542b41/cart${modifiedEmail}`);
+        const response = await axios.get(`https://crudcrud.com/api/a007a6d4eac247abbc429216d38717e6/cart${modifiedEmail}`);
         setCartData({
             itemList: response?.data[0]?.items || [],
             cartAmount: response?.data[0]?.totalAmount || 0
@@ -92,7 +92,7 @@ const Cart = ({ setIsShowCart }) => {
         // Remove @ and . from email using regular expressions
         const modifiedEmail = localStorage.getItem('email').replace(/[@.]/g, '');
 
-        const response = await axios.get(`https://crudcrud.com/api/7ce2ae1555d74a348b6255c35b542b41/cart${modifiedEmail}`)
+        const response = await axios.get(`https://crudcrud.com/api/a007a6d4eac247abbc429216d38717e6/cart${modifiedEmail}`)
 
         const products = response.data[0]
         const existingCartItemIndex = products.items.findIndex(
@@ -107,7 +107,7 @@ const Cart = ({ setIsShowCart }) => {
         updatedItems[existingCartItemIndex] = updatedItem;
 
 
-        axios.put(`https://crudcrud.com/api/7ce2ae1555d74a348b6255c35b542b41/cart${modifiedEmail}/${response.data[0]?._id}`, {
+        axios.put(`https://crudcrud.com/api/a007a6d4eac247abbc429216d38717e6/cart${modifiedEmail}/${response.data[0]?._id}`, {
             items: updatedItems,
             totalAmount: updatedTotalAmount,
         }).then((response) => {
