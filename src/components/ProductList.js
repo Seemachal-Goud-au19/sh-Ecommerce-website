@@ -1,10 +1,6 @@
 import React from 'react'
 import Products from './Products'
 
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-
 import './ProductList.css'
 
 const cartElements = [

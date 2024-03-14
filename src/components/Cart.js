@@ -1,8 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react'
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Button from 'react-bootstrap/Button';
 import CartContext from '../store/cart-context';
 import axios from 'axios';
 
@@ -10,41 +6,85 @@ import './Cart.css'
 
 const Cart = ({ setIsShowCart }) => {
     const cartCtx = useContext(CartContext)
-    const [cartData, setCartData] = useState({
-        itemList: [],
-        cartAmount: 0
-    })
+    const [cartData, setCartData] = useState([])
 
-    const onRemoveCart = async (id) => {
+    const onRemoveCart = async (productID) => {
 
         // Remove @ and . from email using regular expressions
         const modifiedEmail = localStorage.getItem('email').replace(/[@.]/g, '');
 
-        const response = await axios.get(`https://crudcrud.com/api/a007a6d4eac247abbc429216d38717e6/cart${modifiedEmail}`)
+        const response = await axios.get(`https://sh-ecommerce-default-rtdb.firebaseio.com/cart${modifiedEmail}.json`);
+        const { data } = response
+        const fetchedProductList = [];
+        for (const productID in data) {
 
-        const products = response.data[0]
-        const existingCartItemIndex = products.items.findIndex(
-            (item) => item.id === id
-        );
-        const existingItem = products.items[existingCartItemIndex];
-        const updatedTotalAmount = products.totalAmount - existingItem.price;
-        let updatedItems;
-        if (existingItem.quantity === 1) {
-            updatedItems = products.items.filter(item => item.id !== id);
-        } else {
-            const updatedItem = { ...existingItem, quantity: existingItem.quantity - 1 };
-            updatedItems = [...products.items];
-            updatedItems[existingCartItemIndex] = updatedItem;
+            fetchedProductList.push({
+                productID,
+                id: data[productID].id,
+                title: data[productID].title,
+                imageUrl: data[productID].imageUrl,
+                price: data[productID].price,
+                quantity: data[productID].quantity,
+            })
         }
 
-        axios.put(`https://crudcrud.com/api/a007a6d4eac247abbc429216d38717e6/cart${modifiedEmail}/${response.data[0]?._id}`, {
-            items: updatedItems,
-            totalAmount: updatedTotalAmount,
-        }).then((response) => {
-            console.log("Remove response", response)
-        }).catch((error) => {
-            console.log(error)
+        const existingCartItemIndex = fetchedProductList.findIndex(
+            (item) => item.productID === productID
+        );
+        const existingItem = fetchedProductList[existingCartItemIndex];
+        // const updatedTotalAmount = products.totalAmount - existingItem.price;
+
+        if (existingItem.quantity === 1) {
+            try {
+                await axios.delete(`https://sh-ecommerce-default-rtdb.firebaseio.com/cart${modifiedEmail}/${productID}.json`)
+
+            } catch (err) {
+                console.log(err)
+            }
+        }
+        else {
+
+            const updatedItem = {
+                id: existingItem.id,
+                title: existingItem.title,
+                price: existingItem.price,
+                imageUrl: existingItem.imageUrl,
+                quantity: existingItem.quantity - 1
+            };
+
+            axios.put(`https://sh-ecommerce-default-rtdb.firebaseio.com/cart${modifiedEmail}/${productID}.json`, updatedItem
+            ).then((response) => {
+                console.log("Remove response", response)
+            }).catch((error) => {
+                console.log(error)
+            })
+        }
+
+        // total amount calculation
+        const getResponse = await axios.get(`https://sh-ecommerce-default-rtdb.firebaseio.com/cart${modifiedEmail}.json`)
+        const data1 = getResponse.data
+        const fetchedProductList1 = [];
+        for (const productID in data1) {
+
+            fetchedProductList1.push({
+                productID,
+                id: data1[productID].id,
+                title: data1[productID].title,
+                imageUrl: data1[productID].imageUrl,
+                price: data1[productID].price,
+                quantity: data1[productID].quantity,
+            })
+        }
+        const totalAmount = fetchedProductList1.reduce((accumulator, product) => accumulator + (product.price * product.quantity), 0)
+
+        //////
+
+        cartCtx.dispatch({
+            type: 'AMOUNT',
+            totalAmount
         })
+
+        ////
 
         cartCtx.dispatch({
             type: 'ISDELETEADD'
@@ -52,18 +92,20 @@ const Cart = ({ setIsShowCart }) => {
     }
 
     const purchaseHandler = async () => {
-        // Remove @ and . from email using regular expressions
+        // // Remove @ and . from email using regular expressions
         const modifiedEmail = localStorage.getItem('email').replace(/[@.]/g, '');
-        const response = await axios.get(`https://crudcrud.com/api/a007a6d4eac247abbc429216d38717e6/cart${modifiedEmail}`)
 
-        await axios.put(`https://crudcrud.com/api/a007a6d4eac247abbc429216d38717e6/cart${modifiedEmail}/${response.data[0]?._id}`, {
-            items: [],
-            totalAmount: 0,
-        }).then((response) => {
+        await axios.delete(`https://sh-ecommerce-default-rtdb.firebaseio.com/cart${modifiedEmail}.json`).then((response) => {
             cartCtx.dispatch({
                 type: 'CARTITEMS',
                 numberOfCartItems: 0
             })
+
+            cartCtx.dispatch({
+                type: 'AMOUNT',
+                totalAmount: 0
+            })
+
             cartCtx.dispatch({
                 type: 'ISDELETEADD'
             })
@@ -72,6 +114,7 @@ const Cart = ({ setIsShowCart }) => {
             console.log(error)
         })
 
+
     }
 
     const getProductItems = async () => {
@@ -79,42 +122,95 @@ const Cart = ({ setIsShowCart }) => {
         // Remove @ and . from email using regular expressions
         const modifiedEmail = localStorage.getItem('email').replace(/[@.]/g, '');
 
-        const response = await axios.get(`https://crudcrud.com/api/a007a6d4eac247abbc429216d38717e6/cart${modifiedEmail}`);
-        setCartData({
-            itemList: response?.data[0]?.items || [],
-            cartAmount: response?.data[0]?.totalAmount || 0
-        })
-        cartCtx.dispatch({ type: 'CARTITEMS', numberOfCartItems: response?.data[0]?.items.length || 0 })
+        const response = await axios.get(`https://sh-ecommerce-default-rtdb.firebaseio.com/cart${modifiedEmail}.json`);
+        const { data } = response
+        const fetchedProductList = [];
+        for (const productID in data) {
+
+            fetchedProductList.push({
+                productID,
+                id: data[productID].id,
+                title: data[productID].title,
+                imageUrl: data[productID].imageUrl,
+                price: data[productID].price,
+                quantity: data[productID].quantity,
+            })
+        }
+
+        setCartData(fetchedProductList)
+        cartCtx.dispatch({ type: 'CARTITEMS', numberOfCartItems: fetchedProductList.length || 0 })
     }
 
 
-    const onChangeQuantity = async (id) => {
+    const onChangeQuantity = async (productID) => {
         // Remove @ and . from email using regular expressions
         const modifiedEmail = localStorage.getItem('email').replace(/[@.]/g, '');
 
-        const response = await axios.get(`https://crudcrud.com/api/a007a6d4eac247abbc429216d38717e6/cart${modifiedEmail}`)
+        const response = await axios.get(`https://sh-ecommerce-default-rtdb.firebaseio.com/cart${modifiedEmail}.json`);
+        const { data } = response
+        const fetchedProductList = [];
+        for (const productID in data) {
 
-        const products = response.data[0]
-        const existingCartItemIndex = products.items.findIndex(
-            (item) => item.id === id
+            fetchedProductList.push({
+                productID,
+                id: data[productID].id,
+                title: data[productID].title,
+                imageUrl: data[productID].imageUrl,
+                price: data[productID].price,
+                quantity: data[productID].quantity,
+            })
+        }
+
+        const existingCartItemIndex = fetchedProductList.findIndex(
+            (item) => item.productID === productID
         );
-        const existingItem = products.items[existingCartItemIndex];
-        const updatedTotalAmount = products.totalAmount + existingItem.price;
+        const existingItem = fetchedProductList[existingCartItemIndex];
+
+        // const updatedTotalAmount = products.totalAmount + existingItem.price;
         let updatedItems;
 
-        const updatedItem = { ...existingItem, quantity: existingItem.quantity + 1 };
-        updatedItems = [...products.items];
-        updatedItems[existingCartItemIndex] = updatedItem;
 
+        const updatedItem = {
+            id: existingItem.id,
+            title: existingItem.title,
+            price: existingItem.price,
+            imageUrl: existingItem.imageUrl,
+            quantity: existingItem.quantity + 1
+        };
 
-        axios.put(`https://crudcrud.com/api/a007a6d4eac247abbc429216d38717e6/cart${modifiedEmail}/${response.data[0]?._id}`, {
-            items: updatedItems,
-            totalAmount: updatedTotalAmount,
-        }).then((response) => {
-            console.log("ADD response", response)
+        axios.put(`https://sh-ecommerce-default-rtdb.firebaseio.com/cart${modifiedEmail}/${productID}.json`, updatedItem
+        ).then((response) => {
+            console.log("Remove response", response)
         }).catch((error) => {
             console.log(error)
         })
+
+
+        // total amount calculation
+        const getResponse = await axios.get(`https://sh-ecommerce-default-rtdb.firebaseio.com/cart${modifiedEmail}.json`)
+        const data1 = getResponse.data
+        const fetchedProductList1 = [];
+        for (const productID in data1) {
+
+            fetchedProductList1.push({
+                productID,
+                id: data1[productID].id,
+                title: data1[productID].title,
+                imageUrl: data1[productID].imageUrl,
+                price: data1[productID].price,
+                quantity: data1[productID].quantity,
+            })
+        }
+        const totalAmount = fetchedProductList1.reduce((accumulator, product) => accumulator + (product.price * product.quantity), 0)
+
+        //////
+
+        cartCtx.dispatch({
+            type: 'AMOUNT',
+            totalAmount
+        })
+
+        ////
 
         cartCtx.dispatch({
             type: 'ISDELETEADD'
@@ -137,7 +233,7 @@ const Cart = ({ setIsShowCart }) => {
             </div>
 
             <div class="cart-items">
-                {cartData?.itemList.length > 0 && cartData?.itemList.map((item) => <div class="cart-row">
+                {cartData.length > 0 && cartData.map((item) => <div class="cart-row">
                     <span class='cart-item cart-column'>
                         <img class='cart-img' src={item.imageUrl} alt="" />
                         <span>{item.title}</span>
@@ -146,9 +242,9 @@ const Cart = ({ setIsShowCart }) => {
                     <span class='cart-price cart-column'>{item.price}</span>
                     {/* quantity */}
                     <span class='cart-quantity cart-column'>
-                        <button class='remove-cart-btn'  onClick={() => { onRemoveCart(item.id) }}>-</button>
+                        <button class='remove-cart-btn' onClick={() => { onRemoveCart(item.productID) }}>-</button>
                         <input type="text" value={item.quantity} />
-                        <button onClick={() => { onChangeQuantity(item.id) }}>+</button>
+                        <button onClick={() => { onChangeQuantity(item.productID) }}>+</button>
 
                     </span>
                 </div>)}
@@ -159,7 +255,7 @@ const Cart = ({ setIsShowCart }) => {
                 <span>
                     <span class="total-title"> <strong>Total</strong>
                     </span>
-                    $<span id="total-value">{cartData?.cartAmount}</span>
+                    $<span id="total-value">{cartCtx.totalAmount || 0}</span>
                 </span>
             </div>
             <button class="purchase-btn" type="button" onClick={purchaseHandler}>PURCHASE</button>

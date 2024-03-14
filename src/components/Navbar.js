@@ -23,9 +23,9 @@ const NavBar = ({ setIsShowCart }) => {
         // Remove @ and . from email using regular expressions
         const modifiedEmail = localStorage.getItem('email')?.replace(/[@.]/g, '');
 
-        const response = await axios.get(`https://crudcrud.com/api/a007a6d4eac247abbc429216d38717e6/cart${modifiedEmail}`);
+        const response = await axios.get(`https://sh-ecommerce-default-rtdb.firebaseio.com/cart${modifiedEmail}.json`)
 
-        cartCtx.dispatch({ type: 'CARTITEMS', numberOfCartItems: response?.data[0]?.items.length || 0 })
+        cartCtx.dispatch({ type: 'CARTITEMS', numberOfCartItems: response?.data ? Object.keys(response.data).length : 0 })
     }
 
     useEffect(() => {

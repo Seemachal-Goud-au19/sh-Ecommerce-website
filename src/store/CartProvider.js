@@ -8,7 +8,7 @@ const defaultState = {
   totalAmount: 0,
   numberOfCartItems: 0,
   userEmail: localStorage.getItem('email'),
-  isDeleteAdd:false
+  isDeleteAdd: false
 }
 
 //for crud crud api
@@ -46,33 +46,12 @@ const cartProductsInBackendHandler = async (updatedItems, updatedTotalAmount, us
 
 
 const cartReducer = (state, action) => {
-  if (action.type === "ADD") {
+  if (action.type === "AMOUNT") {
 
-    const updatedTotalAmount =
-      state.totalAmount + action.item.price * action.item.quantity;
 
-    const existingCartItemIndex = state.items.findIndex(
-      (item) => item.id === action.item.id
-    );
-    const existingCartItem = state.items[existingCartItemIndex];
-    let updatedItems;
-
-    if (existingCartItem) {
-      const updatedItem = {
-        ...existingCartItem,
-        quantity: existingCartItem.quantity + action.item.quantity,
-      };
-      updatedItems = [...state.items];
-      updatedItems[existingCartItemIndex] = updatedItem;
-    } else {
-
-      updatedItems = [...state.items, action.item]
-    }
-
-    cartProductsInBackendHandler(updatedItems, updatedTotalAmount, state.userEmail)
     return {
-      items: updatedItems,
-      totalAmount: updatedTotalAmount,
+      ...state,
+      totalAmount: action.totalAmount,
     };
   }
 
@@ -80,8 +59,7 @@ const cartReducer = (state, action) => {
 
   if (action.type === 'LOGIN') {
     return {
-      items: state.items,
-      totalAmount: state.totalAmount,
+      ...state,
       userEmail: action.email
     }
   }
@@ -96,7 +74,7 @@ const cartReducer = (state, action) => {
   if (action.type === 'ISDELETEADD') {
     return {
       ...state,
-      isDeleteAdd:!state.isDeleteAdd
+      isDeleteAdd: !state.isDeleteAdd
     }
   }
 
@@ -147,7 +125,7 @@ export const CartProvider = (props) => {
     totalAmount: cartState.totalAmount,
     numberOfCartItems: cartState.numberOfCartItems,
     userEmail: cartState.userEmail,
-    isDeleteAdd:cartState.isDeleteAdd,
+    isDeleteAdd: cartState.isDeleteAdd,
     addItem: addItemToCartHandler,
     // removeItem: removeItemFromCartHandler,
     dispatch,
